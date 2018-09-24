@@ -3,7 +3,10 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  API_AUTH: 'http://localhost:8080/oauth/token',
+  API_LANCAMENTO: 'http://localhost:8080/lancamentos',
+  API_LANCAMENTO_RESUMO: 'http://localhost:8080/lancamentos/resumo'
 };
 
 /*

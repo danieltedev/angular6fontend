@@ -1,0 +1,24 @@
+<p></p>
+<div class="row">
+  <form [formGroup]="formLogin" class="col s12 m6 offset-m3" (ngSubmit)="sendForm()">
+    <div class="card">
+      <div class="card-content">
+        <div class="row">
+          <div class="input-field col s12">
+            <input placeholder="Login" id="login" type="text" class="validate" formControlName="email">
+            <label for="login">Login</label>
+          </div>
+          <div class="input-field col s12">
+            <input placeholder="Senha" id="senha" type="password" class="validate" formControlName="senha">
+            <label for="senha">Senha</label>
+          </div>
+        </div>
+      </div>
+      <div class="card-action">
+        <button class="btn waves-effect waves-light" type="submit" name="action">Submit
+          <i class="fas fa-greater-than"></i>
+        </button>
+      </div>
+    </div>
+  </form>
+</div>
