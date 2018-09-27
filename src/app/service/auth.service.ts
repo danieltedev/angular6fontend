@@ -47,5 +47,6 @@ export class AuthService {
   private storageTokenAndUser(token: Token): void {
     AuthService.token.next(token);
     AuthService.userToken.next(AuthService.parseJwt(token.access_token));
+    console.log(AuthService.parseJwt(token.access_token));
   }
 }

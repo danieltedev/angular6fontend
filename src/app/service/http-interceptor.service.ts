@@ -18,7 +18,7 @@ export class HttpInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.loadAccessToken();
     const cloneReq = req.clone({
-      headers: req.headers.set('Authorization', 'Bearer ' + this.token.access_token)
+      headers: req.headers.set('Authorization', 'Bearer ' + (this.token ? this.token.access_token : ""))
     });
     return next.handle(this.isValidUrlRequestToChange(req) ? cloneReq : req)
       .pipe(
