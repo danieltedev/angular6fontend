@@ -5,20 +5,22 @@ import { tap, catchError, take } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 import { AuthService } from './auth.service';
 import { Token } from '../domain/token';
+import { JwtDecode } from '../domain/jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HttpInterceptorService implements HttpInterceptor {
   
-  private token: Token; 
+  private accessToken: String;
 
-  constructor() { }
+  constructor(private authService: AuthService) { }
   
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.loadAccessToken();
+    console.log(this.authService.accessToken);
     const cloneReq = req.clone({
-      headers: req.headers.set('Authorization', 'Bearer ' + (this.token ? this.token.access_token : ""))
+      headers: req.headers.set('Authorization', 'Bearer ' + this.accessToken)
     });
     return next.handle(this.isValidUrlRequestToChange(req) ? cloneReq : req)
       .pipe(
@@ -45,6 +47,6 @@ export class HttpInterceptorService implements HttpInterceptor {
   }
 
   private loadAccessToken(): void {
-    AuthService.token.pipe(take(1)).subscribe((token: Token) => this.token = token);
+    AuthService.jwtDecode.pipe(take(1)).subscribe((jwtDecode: JwtDecode) => this.accessToken = this.authService.isLoggin ? jwtDecode.access_token : null);
   }
 }

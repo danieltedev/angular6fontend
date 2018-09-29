@@ -4,4 +4,5 @@ export interface Token {
     jti?: String;
     scope?: String;
     token_type?: String;
+    name?: String;
 }

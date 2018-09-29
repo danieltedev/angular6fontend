@@ -4,6 +4,9 @@ import { FormBuilder, FormGroup } from "@angular/forms";
 
 import { Usuario } from "../domain/usuario";
 import { AuthService } from '../service/auth.service';
+import { Router } from '@angular/router';
+import { pipe } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -14,7 +17,7 @@ export class LoginComponent implements OnInit {
 
   formLogin: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService) { }
+  constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) { }
 
   createForm() {
     this.formLogin = this.fb.group({
@@ -26,7 +29,9 @@ export class LoginComponent implements OnInit {
   sendForm() {
     const usuario = this.formLogin.value as Usuario;
     console.log(usuario);
-    this.authService.login(usuario).subscribe(r => console.log(r));
+    this.authService.login(usuario).pipe(take(1)).subscribe(r => {
+      this.router.navigate(['/dashboard']);
+    });
   }
 
   ngOnInit() {

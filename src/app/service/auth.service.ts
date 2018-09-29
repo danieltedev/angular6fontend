@@ -8,15 +8,17 @@ import { tap, catchError } from 'rxjs/operators';
 import { Usuario } from '../domain/usuario';
 import { environment } from '../../environments/environment';
 import { Token } from '../domain/token';
-import { UserToken } from '../domain/user-token';
+import { JwtDecode } from '../domain/jwt-decode';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  static userToken: BehaviorSubject<UserToken> = new BehaviorSubject<UserToken>(null);
-  static token: BehaviorSubject<Token> = new BehaviorSubject<Token>(null);
+  static jwtDecode: BehaviorSubject<JwtDecode> = new BehaviorSubject<JwtDecode>(null);
+  isLoggin: Boolean = false;
+  accessToken: String;
+  username: String;
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -38,15 +40,18 @@ export class AuthService {
     );
   }
 
-  static parseJwt(token: String): Object {
+  static parseJwt(token: String): JwtDecode {
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    return JSON.parse(window.atob(base64));
+    const jwtDecode: JwtDecode = JSON.parse(window.atob(base64));
+    jwtDecode.access_token = token;
+    return jwtDecode;
   }
 
   private storageTokenAndUser(token: Token): void {
-    AuthService.token.next(token);
-    AuthService.userToken.next(AuthService.parseJwt(token.access_token));
-    console.log(AuthService.parseJwt(token.access_token));
+    this.isLoggin = true;
+    this.accessToken = token.access_token;
+    this.username = token.name
+    AuthService.jwtDecode.next(AuthService.parseJwt(token.access_token));
   }
 }

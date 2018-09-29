@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { take } from 'rxjs/operators';
+import { JwtDecode } from '../domain/jwt-decode';
 
 @Component({
   selector: 'app-dashboard',
@@ -10,6 +13,7 @@ export class DashboardComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    
   }
 
 }
